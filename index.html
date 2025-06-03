@@ -341,7 +341,12 @@
         }
 
         async function setupWebRTC() {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                showError("Your browser does not support WebRTC. Please use a modern browser like Chrome or Firefox.");
+                return;
+            }
             const config = __RTC_CONFIGURATION__;
+            console.log("RTCConfiguration being used:", config);
             peerConnection = new RTCPeerConnection(config);
             webrtc_id = Math.random().toString(36).substring(7);
 
