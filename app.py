@@ -33,15 +33,15 @@ load_dotenv()
 
 
 
-# rtc_configuration = {
-#     "iceServers": [
-#         {
-#             "urls": "turn:3.86.17.131:80",
-#             "username": "vaishnavik",
-#             "credential": "Gajanan@130599"
-#         },
-#     ]
-# }
+rtc_configuration = {
+    "iceServers": [
+        {
+            "urls": "turn:18.234.206.204:80",
+            "username": "vaishnavik",
+            "credential": "Gajanan@130599"
+        },
+    ]
+}
 
 
 
@@ -2625,7 +2625,7 @@ stream = Stream(
     modality="audio",
     mode="send-receive",
     handler=GeminiHandler(),
-    rtc_configuration=get_cloudflare_turn_credentials_async if get_space() else None,
+    rtc_configuration=rtc_configuration,
     concurrency_limit=5 if get_space() else None,
     time_limit=90 if get_space() else None,
     additional_inputs=[
@@ -2668,7 +2668,7 @@ async def _(body: InputData):
 
 @app.get("/")
 async def index():
-    rtc_config = await get_cloudflare_turn_credentials_async() if get_space() else None
+    rtc_config = rtc_configuration
     html_content = (current_dir / "index.html").read_text()
     html_content = html_content.replace("__RTC_CONFIGURATION__", json.dumps(rtc_config))
     return HTMLResponse(content=html_content)
